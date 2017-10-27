@@ -29,10 +29,18 @@ int main(){
                         howMany++;
                 }
         }
-
         if (howMany == 0){
                 cout << "No files were entered. Please try again.\n";
         }
+        /*
+        if (howMany > 0){
+                for (int index = 0; index < howMany; index++){
+                vector <vector <Pixel> > bmp;
+                string name;
+                bmp = convertImage();
+                }
+        }
+        */
 }
 
 
