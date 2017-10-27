@@ -6,13 +6,15 @@
 using namespace std;
 
 //Prototypes for functions:
-Bitmap userInput(string);
+Bitmap userInput(string, int &index);
 vector <vector <Pixel> > convertImage(Bitmap);
 void saveImage(int, vector <vector <Pixel> >);
 
 int main(){
+
+        int howMany = 0;
         //Asks user for 10 images
-        for (int index = 0; index <= 10; index++){
+        for (int index = 0; index < 10; index++){
                 vector <vector <Pixel> > bmp;
                 string name;
 
@@ -22,27 +24,30 @@ int main(){
                         index = 10;
                 }
                 else{
-                        bmp = convertImage(userInput(name));
-                        cout << "File " << index + 1 << " entered.\n";
-
+                        bmp = convertImage(userInput(name, index));
                         saveImage(index, bmp);
+                        howMany++;
                 }
+        }
+
+        if (howMany == 0){
+                cout << "No files were entered. Please try again.\n";
         }
 }
 
 
-Bitmap userInput(string name){
+Bitmap userInput(string name, int &index){
         Bitmap image;
-
         //Checks to see if file is correct format
         image.open(name);
         bool validBmp = image.isImage();
 
         if (validBmp == true){
+                cout << "File " << index + 1 << " entered.\n";
                 return image;
         }
         if (validBmp == false){
-                cout << "Please enter a .bmp format file.\n";
+                index--;
         }
 }
 
