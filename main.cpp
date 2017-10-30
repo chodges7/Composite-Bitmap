@@ -23,13 +23,14 @@ int main(){
 		vector <vector <Pixel> > bmp;
 		string name;
 
-		cout << "Enter file name: ";
-		cin >> name;
-
+		if (howMany != 10){
+			cout << "Enter file name: ";
+			cin >> name;
+		}
 		if (name == "DONE" || name == "done"){
 			done = true;
 		}
-		else if (howMany == 9){
+		else if (howMany == 10){
 			done = true;
 		}
 		else{
@@ -54,7 +55,7 @@ int main(){
 		}
 	}
 	while (done == false);
-	cout << "DONE! Please see canvas.bmp file for output.\n";
+	cout << "DONE! Please see combinedImage.bmp file for output.\n";
 	saveImage(canvas);
 	return 0;
 }
@@ -64,7 +65,7 @@ vector <vector <Pixel> > applyToCanvas(vector <vector <Pixel> > canvas, vector <
 	Pixel crgb;
 
 	if (canvas.size() != bmp.size() && canvas[0].size() != bmp[0].size()){
-		cout << "Some of the .bmp files aren't the right sizes\n";	
+		cout << "\nSome of the .bmp files aren't the right sizes\n\n";	
 	}
 	else{	
 		for (int rodex = 0; rodex < canvas.size(); rodex++){
@@ -81,17 +82,6 @@ vector <vector <Pixel> > applyToCanvas(vector <vector <Pixel> > canvas, vector <
 				crgb.blue = tempBlue / 2;
 				crgb.green = tempGreen / 2;
 				canvas[rodex][coldex] = crgb;
-				/*
-				   rgb = bmp[rodex][coldex];
-				   crgb = canvas[rodex][coldex];
-				   crgb.red = rgb.red + crgb.red;
-				   crgb.red = crgb.red / 2;
-				   crgb.blue = rgb.blue + crgb.blue;
-				   crgb.blue = crgb.blue / 2;
-				   crgb.green = rgb.green + crgb.green;
-				   crgb.green = crgb.green / 2;
-				   canvas[rodex][coldex] = crgb;
-				 */
 			}
 		}
 		return canvas;
@@ -105,7 +95,7 @@ Bitmap userInput(string name, int &howMany){
 	bool validBmp = image.isImage();
 
 	if (validBmp == true){
-		cout << "File " << howMany + 1 << " entered.\n";
+		cout << "File " << howMany + 1 << " entered. ";
 		return image;
 	}
 	if (validBmp == false){
