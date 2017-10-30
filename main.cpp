@@ -9,18 +9,17 @@ using namespace std;
 Bitmap userInput(string, int &howMany);
 vector <vector <Pixel> > convertImage(Bitmap);
 void saveImage(vector <vector <Pixel> >);
-Bitmap combineImages(int);
 vector <vector <Pixel> > applyToCanvas(vector< vector <Pixel> >, vector <vector <Pixel> >);
-bool sameSize = true;
+
 
 int main(){
 
 	vector <vector <Pixel> > canvas;
+	bool sameSize = true;
 	bool done = false;
 	int howMany = 0;
 
 	do {
-
 		vector <vector <Pixel> > bmp;
 		string name;
 
@@ -34,19 +33,16 @@ int main(){
 			done = true;
 		}
 		else{
+			//Turns entered name into Matrix of Pixels
 			bmp = convertImage(userInput(name, howMany));
 
 			//If it's the first time through, it resizes canvas
 			if (howMany == 0){
-				int rows = bmp.size();
-				int columns = bmp[0].size();
-				canvas.resize(rows);
-				for (int index = 0; index < canvas.size(); index++){
-					canvas[rows].resize(columns);
-				}	
+				canvas = bmp;
 			}
-
-			canvas = applyToCanvas(canvas, bmp);
+			else if (howMany != 0){
+				canvas = applyToCanvas(canvas, bmp);
+			}
 			if (sameSize == false){
 				//If during the applyToCanvas stage, the files were different sizes
 				//then it stops the program.
@@ -72,16 +68,30 @@ vector <vector <Pixel> > applyToCanvas(vector <vector <Pixel> > canvas, vector <
 	}
 	else{	
 		for (int rodex = 0; rodex < canvas.size(); rodex++){
+			int tempRed;
+			int tempBlue;
+			int tempGreen;
 			for (int coldex = 0; coldex < canvas[rodex].size();coldex++){
 				rgb = bmp[rodex][coldex];
 				crgb = canvas[rodex][coldex];
-				crgb.red = rgb.red + crgb.red;
-				crgb.red = crgb.red / 2;
-				crgb.blue = rgb.blue + crgb.blue;
-				crgb.blue = crgb.blue / 2;
-				crgb.green = rgb.green + crgb.green;
-				crgb.green = crgb.green / 2;
+				tempRed = rgb.red + crgb.red;
+				tempBlue = rgb.blue + crgb.blue;
+				tempGreen = rgb.green + crgb.green;
+				crgb.red = tempRed / 2;
+				crgb.blue = tempBlue / 2;
+				crgb.green = tempGreen / 2;
 				canvas[rodex][coldex] = crgb;
+				/*
+				   rgb = bmp[rodex][coldex];
+				   crgb = canvas[rodex][coldex];
+				   crgb.red = rgb.red + crgb.red;
+				   crgb.red = crgb.red / 2;
+				   crgb.blue = rgb.blue + crgb.blue;
+				   crgb.blue = crgb.blue / 2;
+				   crgb.green = rgb.green + crgb.green;
+				   crgb.green = crgb.green / 2;
+				   canvas[rodex][coldex] = crgb;
+				 */
 			}
 		}
 		return canvas;
