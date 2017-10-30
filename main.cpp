@@ -6,76 +6,86 @@
 using namespace std;
 
 //Prototypes for functions:
-Bitmap userInput(string, int &index);
+Bitmap userInput(string, int &howMany);
 vector <vector <Pixel> > convertImage(Bitmap);
-void saveImage(string &name, vector <vector <Pixel> >, int);
+void saveImage(vector <vector <Pixel> >);
 Bitmap combineImages(int);
-
-string firstimage;
-string secondimage;
-string thirdimage;
-string fourthimage;
-string fifthimage;
-string sixthimage;
-string seventhimage;
-string eigthimage;
-string ninthimage;
-string tenthimage;
+vector <vector <Pixel> > applyToCavas(vector< vector <Pixel> >, vector <vector <Pixel> >);
 
 int main(){
 
+	vector <vector <Pixel> > canvas;
+	bool done = false;
 	int howMany = 0;
-	//Asks user for 10 images
-	for (int index = 0; index < 10; index++){
+
+	do {
+
 		vector <vector <Pixel> > bmp;
 		string name;
+
 		cout << "Enter file name: ";
 		cin >> name;
 
 		if (name == "DONE" || name == "done"){
-			index = 10;
+			done = true;
+		}
+		else if (howMany == 10){
+			done = true;
 		}
 		else{
-			bmp = convertImage(userInput(name, index));
-			saveImage(name, bmp, index);
+			bmp = convertImage(userInput(name, howMany));
+			
+			//If it's the first time through, it resizes canvas
+			if (howMany == 0){
+				int rows = bmp.size();
+				int columns = bmp[0].size();
+				canvas.resize(rows);
+				for (int index = 0; index < canvas.size(); index++){
+					canvas[rows].resize(columns);
+				}	
+			}
+
+			canvas = applyToCanvas(canvas, bmp);
 			howMany++;
 		}
 	}
-	if (howMany == 0){
-		cout << "No files were entered. Please try again.\n";
-	}	
-	if (howMany > 0){
-		for (int imageNum = 0; imageNum < howMany; imageNum++){
-			combineImages(imageNum);
+	while (done == false);
+saveImage(canvas);
+return 0;
+}
+
+vector <vector <Pixel> > applyToCanvas(vector <vector <Pixel> > canvas, vector <vector <Pixel> > bmp){
+	Pixel rgb;
+	Pixel crgb;
+
+	for (int rodex = 0; rodex < canvas.size(); rodex++){
+		for (int coldex = 0; coldex < canvas[rodex].size();coldex++){
+			rgb = bmp[rodex][coldex];
+			crgb = canvas[rodex][coldex];
+			crgb.red = rgb.red + crgb.red;
+			crgb.red = crgb.red / 2;
+			crgb.blue = rgb.blue + crgb.blue;
+			crgb.blue = crgb.blue / 2;
+			crgb.green = rgb.green + crgb.green;
+			crgb.green = crgb.green / 2;
+			canvas[rodex][coldex] = crgb;
 		}
 	}
+	return canvas;
 }
 
-Bitmap combineImages(int imageNum){
-	Bitmap image;
-	Bitmap secondImage;
-	vector <vector <Pixel> > bmp;
-	vector <vector <Pixel> > secondbmp;
-	Pixel rgb;
-	Pixel secondrgb;
-	if (imageNum = 0){
-		image.open(firstimage);
-		secondImage(secondImage)
-	}
-}
-
-Bitmap userInput(string name, int &index){
+Bitmap userInput(string name, int &howMany){
 	Bitmap image;
 	//Checks to see if file is correct format
 	image.open(name);
 	bool validBmp = image.isImage();
 
 	if (validBmp == true){
-		cout << "File " << index + 1 << " entered.\n";
+		cout << "File " << howMany + 1 << " entered.\n";
 		return image;
 	}
 	if (validBmp == false){
-		index--;
+		howMany--;
 	}
 }
 
@@ -85,40 +95,8 @@ vector <vector <Pixel> > convertImage(Bitmap image){
 	return bmp;
 }
 
-void saveImage(string &name, vector <vector <Pixel> > bmp, int index){
+void saveImage(vector <vector <Pixel> > bmp){
 	Bitmap image;
-
-	if (index == 0){
-		firstimage = name;
-	}
-	else if (index == 1){
-		secondimage = name;
-	}
-	else if (index == 2){
-		thirdimage = name;
-	}
-	else if (index == 3){
-		fourthimage = name;
-	}
-	else if (index == 4){
-		fifthimage = name;	
-	}
-	else if (index == 5){
-		sixthimage = name;
-	}
-	else if (index == 6){
-		seventhimage = name;
-	}
-	else if (index == 7){
-		eigthimage = name;
-	}
-	else if (index == 8){
-		ninthimage = name;
-	}
-	else if (index == 9){
-		tenthimage = name;
-	}
-
 	image.fromPixelMatrix(bmp);
-	image.save(name);
+	image.save("combinedImage.bmp");
 }
