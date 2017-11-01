@@ -22,7 +22,7 @@ int main(){
         do {
                 vector <vector <Pixel> > bmp;
                 string name;
-                
+
                 //Limits amt of pictures you can enter
                 if (howMany != 10){
                         cout << "Enter file name: ";
@@ -49,8 +49,8 @@ int main(){
                                 cout << "Please try again\n";				
                                 return 0;
                         }
-                                //Shows progress of program as images applied to canvas
-cout << "File " << howMany + 1 << " applied to canvas.\n";
+                        //Shows progress of program as images applied to canvas
+                        cout << "File " << howMany + 1 << " applied to canvas.\n";
                         howMany++;
                 }
         }
@@ -58,7 +58,7 @@ cout << "File " << howMany + 1 << " applied to canvas.\n";
         while (done == false);
 
         //Couts that the program is done and saves image
-        cout << "DONE! Please see combinedImage.bmp file for output.\n";
+        cout << "DONE! Please see composite-chodges7.bmp file for output.\n";
         saveImage(canvas);
         return 0;
 }
@@ -67,6 +67,7 @@ vector <vector <Pixel> > applyToCanvas(vector <vector <Pixel> > canvas, vector <
         Pixel rgb;
         Pixel crgb;
 
+        //If some of the files aren't the same size then the header file and this cout statement will tell you.
         if (canvas.size() != bmp.size() && canvas[0].size() != bmp[0].size()){
                 cout << "\nSome of the .bmp files aren't the right sizes\n\n";	
         }
@@ -76,6 +77,8 @@ vector <vector <Pixel> > applyToCanvas(vector <vector <Pixel> > canvas, vector <
                         int tempBlue;
                         int tempGreen;
                         for (int coldex = 0; coldex < canvas[rodex].size();coldex++){
+                                //This section of code can't be in a sep function because it uses too many
+                                // of the variables that are just used in this function.
                                 rgb = bmp[rodex][coldex];
                                 crgb = canvas[rodex][coldex];
                                 tempRed = rgb.red + crgb.red;
@@ -98,10 +101,13 @@ Bitmap userInput(string name, int &howMany){
         bool validBmp = image.isImage();
 
         if (validBmp == true){
+                //This cout is mainly to show progress for the program.
                 cout << "File " << howMany + 1 << " entered. ";
                 return image;
         }
         if (validBmp == false){
+                //If file isn't right, then the header file will send an error
+                // and the program will ask again at the right index.
                 howMany--;
         }
 }
@@ -113,8 +119,9 @@ vector <vector <Pixel> > convertImage(Bitmap image){
         return bmp;
 }
 
+//This function is to save the matrix of pixels at the end of the program
 void saveImage(vector <vector <Pixel> > bmp){
         Bitmap image;
         image.fromPixelMatrix(bmp);
-        image.save("combinedImage.bmp");
+        image.save("composite-chodges7.bmp");
 }
