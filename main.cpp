@@ -1,3 +1,17 @@
+/*
+    First, the program needs to take input from the user but only 10 times.
+    
+    Convert images from .bmp files into a matrix of pixels that our program
+    can then use to apply to the canvas.
+
+    After that the program needs to apply each of the new images, if they
+    are usable to the canvas (a matrix that will be used as the .bmp file
+    to apply all the pictues to).
+    
+    Then there needs to be a function to save the new canvas.bmp file to 
+    composite-chodges7.bmp in the directory.
+*/
+
 #include<iostream>
 #include<vector>
 #include<string>
@@ -6,11 +20,16 @@
 using namespace std;
 
 //Prototypes for functions:
+//Take in user input and verify it will work for our program.
 Bitmap userInput(string, int &howMany);
+//Convert image from a Bitmap to a matrix of Pixels.
 vector <vector <Pixel> > convertImage(Bitmap);
+//Saves matrix inputed as final composite image.
 void saveImage(vector <vector <Pixel> >);
+//Take in the canvas and new matrix and avg their values together.
 vector <vector <Pixel> > applyToCanvas(vector< vector <Pixel> >, vector <vector <Pixel> >);
 
+const int maxPics = 10;
 
 int main(){
 
@@ -24,7 +43,7 @@ int main(){
                 string name;
 
                 //Limits amt of pictures you can enter
-                if (howMany != 10){
+                if (howMany != maxPics){
                         cout << "Enter file name: ";
                         cin >> name;
                 }
@@ -58,7 +77,7 @@ int main(){
         while (done == false);
 
         //Couts that the program is done and saves image
-        cout << "DONE! Please see composite-chodges7.bmp file for output.\n";
+        cout << "DONE! Please see composite-chodges7.bmp file for final output.\n";
         saveImage(canvas);
         return 0;
 }
