@@ -8,9 +8,12 @@
    are usable to the canvas (a matrix that will be used as the .bmp file
    to apply all the pictues to).
 
+   Then the program needs to divide each pixel of the canvas depending on 
+   how many pictures have been added to the program.
+
    Then there needs to be a function to save the new canvas.bmp file to 
    composite-chodges7.bmp in the directory.
- */
+*/
 
 #include<iostream>
 #include<vector>
@@ -20,14 +23,17 @@
 using namespace std;
 
 //Prototypes for functions:
+
 //Take in user input and verify it will work for our program.
 Bitmap userInput(string, int &howMany);
 //Convert image from a Bitmap to a matrix of Pixels.
 vector <vector <Pixel> > convertImage(Bitmap);
 //Saves matrix inputed as final composite image.
 void saveImage(vector <vector <Pixel> >);
-//Take in the canvas and new matrix and avg their values together.
+//Take in the canvas and bmp matricies and combine them
 vector <vector <Pixel> > applyToCanvas(vector< vector <Pixel> >, vector <vector <Pixel> >);
+//Take in canvas and divide by how many pictures there have been
+void avgCanvas(vector< vector <Pixel> > &, int);
 
 const int maxPics = 10;
 
@@ -75,11 +81,32 @@ int main(){
         }
         //Once the done bool is ture it exits the do while loop
         while (done == false);
+        if (howMany == 0){
+                cerr << "No images entered; please try again.\n";
+        }
+        else{
+                //Avg the canvas out depending on how many pictures have been added
+                avgCanvas(canvas, howMany);
 
-        //Couts that the program is done and saves image
-        cout << "DONE! Please see composite-chodges7.bmp file for final output.\n";
-        saveImage(canvas);
+                //Couts that the program is done and saves image
+                cout << "DONE! Please see composite-chodges7.bmp file for final output.\n";
+                saveImage(canvas);
+        }
         return 0;
+}
+
+void avgCanvas(vector <vector <Pixel> > &canvas, int howMany){
+        Pixel rgb;
+
+        for (int rodex = 0; rodex < canvas.size(); rodex++){
+                for (int coldex = 0; coldex < canvas[rodex].size();coldex++){
+                        rgb = canvas[rodex][coldex];
+                        rgb.red = rgb.red / howMany;
+                        rgb.blue = rgb.blue / howMany;
+                        rgb.green = rgb.green / howMany;
+                        canvas[rodex][coldex] = rgb;
+                }
+        }
 }
 
 vector <vector <Pixel> > applyToCanvas(vector <vector <Pixel> > canvas, vector <vector <Pixel> > bmp){
@@ -92,20 +119,12 @@ vector <vector <Pixel> > applyToCanvas(vector <vector <Pixel> > canvas, vector <
         }
         else{	
                 for (int rodex = 0; rodex < canvas.size(); rodex++){
-                        int tempRed;
-                        int tempBlue;
-                        int tempGreen;
                         for (int coldex = 0; coldex < canvas[rodex].size();coldex++){
-                                //This section of code can't be in a sep function because it uses too many
-                                // of the variables that are just used in this function.
                                 rgb = bmp[rodex][coldex];
                                 crgb = canvas[rodex][coldex];
-                                tempRed = rgb.red + crgb.red;
-                                tempBlue = rgb.blue + crgb.blue;
-                                tempGreen = rgb.green + crgb.green;
-                                crgb.red = tempRed / 2;
-                                crgb.blue = tempBlue / 2;
-                                crgb.green = tempGreen / 2;
+                                crgb.red = rgb.red + crgb.red;
+                                crgb.blue = rgb.blue + crgb.blue;
+                                crgb.green = rgb.green + crgb.green;
                                 canvas[rodex][coldex] = crgb;
                         }
                 }
