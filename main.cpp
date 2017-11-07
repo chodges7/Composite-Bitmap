@@ -1,16 +1,16 @@
 /*
-    First, the program needs to take input from the user but only 10 times.
-    
-    Convert images from .bmp files into a matrix of pixels that our program
-    can then use to apply to the canvas.
+   First, the program needs to take input from the user but only 10 times.
 
-    After that the program needs to apply each of the new images, if they
-    are usable to the canvas (a matrix that will be used as the .bmp file
-    to apply all the pictues to).
-    
-    Then there needs to be a function to save the new canvas.bmp file to 
-    composite-chodges7.bmp in the directory.
-*/
+   Convert images from .bmp files into a matrix of pixels that our program
+   can then use to apply to the canvas.
+
+   After that the program needs to apply each of the new images, if they
+   are usable to the canvas (a matrix that will be used as the .bmp file
+   to apply all the pictues to).
+
+   Then there needs to be a function to save the new canvas.bmp file to 
+   composite-chodges7.bmp in the directory.
+ */
 
 #include<iostream>
 #include<vector>
@@ -88,7 +88,7 @@ vector <vector <Pixel> > applyToCanvas(vector <vector <Pixel> > canvas, vector <
 
         //If some of the files aren't the same size then the header file and this cout statement will tell you.
         if (canvas.size() != bmp.size() && canvas[0].size() != bmp[0].size()){
-                cout << "\nSome of the .bmp files aren't the right sizes\n\n";	
+                cerr << "\nSome of the .bmp files aren't the right sizes\n\n";	
         }
         else{	
                 for (int rodex = 0; rodex < canvas.size(); rodex++){
@@ -124,7 +124,7 @@ Bitmap userInput(string name, int &howMany){
                 cout << "File " << howMany + 1 << " entered. ";
                 return image;
         }
-        if (validBmp == false){
+        else if (validBmp == false){
                 //If file isn't right, then the header file will send an error
                 // and the program will ask again at the right index.
                 howMany--;
